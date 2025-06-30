@@ -77,7 +77,7 @@
                 {% for item in row %}
                   <td>{{ item }}</td>
                 {% endfor %}
-                <td><a href="{{ url_for('edit') }}">編集</a></td>
+                <td><a href="{{ url_for('edit', index=loop.index0) }}">編集</a></td>
               </tr>
             {% endfor %}
           </tbody>
