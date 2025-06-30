@@ -45,7 +45,6 @@ def get_next_id(responses):
         return '1'
     return str(max(int(r['id']) for r in responses) + 1)
 
-
 @app.route('/')
 def index():
     responses = load_responses()
