@@ -58,8 +58,7 @@ def edit(index):
         save_all(responses)
         return redirect(url_for('index'))
 
-
-     response = {
+    response = {
         'name': responses[index][0],
         'faculty': responses[index][1],
         'department': responses[index][2],
