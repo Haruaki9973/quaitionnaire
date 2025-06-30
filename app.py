@@ -21,6 +21,11 @@ def load_responses():
     except FileNotFoundError:
         return []
 
+def save_all(responses):
+    with open(DATA_FILE, mode='w', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerows(responses)
+        
 @app.route('/')
 def index():
     responses = load_responses()
@@ -35,12 +40,34 @@ def submit():
     interest = request.form['interest']
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     
-save_response([name, faculty, department, experience, interest, timestamp])
+    save_response([name, faculty, department, experience, interest, timestamp])
     return redirect(url_for('index'))
 
+@app.route('/edit/<int:index>', methods=['GET', 'POST'])
+def edit(index):
+    responses = load_responses()
+    if index < 0 or index >= len(responses):
+        return redirect(url_for('index'))
+
+    if request.method == 'POST':
+        responses[index][0] = request.form['name']
+        responses[index][1] = request.form['faculty']
+        responses[index][2] = request.form['department']
+        responses[index][3] = request.form['experience']
+        responses[index][4] = request.form['interest']
+        save_all(responses)
+        return redirect(url_for('index'))
 
 
-    return redirect(url_for('index'))
+     response = {
+        'name': responses[index][0],
+        'faculty': responses[index][1],
+        'department': responses[index][2],
+        'experience': responses[index][3],
+        'interest': responses[index][4]
+    }
+    return render_template('edit.html', response=response, index=index)
+
 
 
 if __name__ == '__main__':
