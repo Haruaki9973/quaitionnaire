@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lagrangelo Web開発チーム アンケート</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #f0f4f8;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 2em;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 700px;
+    }
+    h1, h2 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+    }
+    input, textarea, button {
+      font-size: 1em;
+      padding: 0.8em;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      background-color: #2980b9;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #1c5980;
+    }
+    .response {
+      margin-top: 2em;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 0.5em;
+      text-align: left;
+    }
+    th {
+      background-color: #eaf2f8;
+    }
+    .action-btn {
+      margin-right: 0.3em;
+      padding: 0.3em 0.6em;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+    }
+    .delete-btn {
+      background-color: #e74c3c;
+      color: white;
+    }
+    .edit-btn {
+      background-color: #f39c12;
+      color: white;
+    }
+    .react-btn {
+      background-color: #2ecc71;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>チームアンケート</h1>
+    <form id="surveyForm">
+      <input type="text" name="name" placeholder="名前" required>
+      <input type="text" name="faculty" placeholder="学部" required>
+      <input type="text" name="department" placeholder="学科" required>
+      <input type="text" name="experience" placeholder="プログラミング経験" required>
+      <textarea name="interest" rows="3" placeholder="やってみたいこと" required></textarea>
+      <button type="submit">送信</button>
+    </form>
+    <div class="response">
+      <h2>みんなの回答</h2>
+      <table id="resultTable">
+        <tr>
+          <th>名前</th><th>学部</th><th>学科</th><th>経験</th><th>やりたいこと</th><th>記入時間</th><th>操作</th><th>👍</th>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('surveyForm');
+    const table = document.getElementById('resultTable');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      const formData = new FormData(form);
+      const row = table.insertRow();
+
+      const nameCell = row.insertCell();
+      nameCell.textContent = formData.get('name');
+      const facultyCell = row.insertCell();
+      facultyCell.textContent = formData.get('faculty');
+      const departmentCell = row.insertCell();
+      departmentCell.textContent = formData.get('department');
+      const experienceCell = row.insertCell();
+      experienceCell.textContent = formData.get('experience');
+      const interestCell = row.insertCell();
+      interestCell.textContent = formData.get('interest');
+
+      const time = new Date();
+      const formattedTime = time.toLocaleString();
+      row.insertCell().textContent = formattedTime;
+
+      const actionsCell = row.insertCell();
+      const deleteBtn = document.createElement('button');
+      deleteBtn.textContent = '削除';
+      deleteBtn.classList.add('action-btn', 'delete-btn');
+      deleteBtn.onclick = () => row.remove();
+
+      const editBtn = document.createElement('button');
+      editBtn.textContent = '編集';
+      editBtn.classList.add('action-btn', 'edit-btn');
+      editBtn.onclick = () => {
+        nameCell.contentEditable = facultyCell.contentEditable = departmentCell.contentEditable = experienceCell.contentEditable = interestCell.contentEditable = true;
+        nameCell.focus();
+      };
+
+      actionsCell.appendChild(editBtn);
+      actionsCell.appendChild(deleteBtn);
+
+      const reactionCell = row.insertCell();
+      const reactBtn = document.createElement('button');
+      reactBtn.textContent = '👍 0';
+      reactBtn.classList.add('action-btn', 'react-btn');
+      let count = 0;
+      reactBtn.onclick = () => {
+        count++;
+        reactBtn.textContent = `👍 ${count}`;
+      };
+      reactionCell.appendChild(reactBtn);
+
+      form.reset();
+    });
+  </script>
+</body>
+</html>
