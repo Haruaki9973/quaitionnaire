@@ -21,6 +21,11 @@
     }
     table {
       font-size: 0.95rem;
+      min-width: 800px;
+      white-space: nowrap;
+    }
+    .table-responsive {
+      overflow-x: auto;
     }
   </style>
 </head>
@@ -43,7 +48,7 @@
           <input type="text" name="experience" class="form-control" placeholder="プログラミング経験" required>
         </div>
         <div class="mb-3">
-          <textarea name="text" class="form-control" rows="3" placeholder="この団体でやってみたいこと" required></textarea>
+          <textarea name="interest" class="form-control" rows="3" placeholder="この団体でやってみたいこと" required></textarea>
         </div>
         <div class="d-grid">
           <button type="submit" class="btn btn-primary">送信</button>
@@ -63,6 +68,7 @@
               <th>経験</th>
               <th>やってみたいこと</th>
               <th>記入時間</th>
+              <th>操作</th>
             </tr>
           </thead>
           <tbody>
@@ -71,6 +77,7 @@
                 {% for item in row %}
                   <td>{{ item }}</td>
                 {% endfor %}
+                <td><a href="{{ url_for('edit', index=loop.index0) }}">編集</a></td>
               </tr>
             {% endfor %}
           </tbody>
