@@ -63,26 +63,14 @@
               <th>経験</th>
               <th>やってみたいこと</th>
               <th>記入時間</th>
-              <th>いいね</th>
-              <th>編集</th>
             </tr>
           </thead>
           <tbody>
             {% for row in responses %}
               <tr>
-                <td>{{ row.name }}</td>
-                <td>{{ row.faculty }}</td>
-                <td>{{ row.department }}</td>
-                <td>{{ row.experience }}</td>
-                <td>{{ row.interest }}</td>
-                <td>{{ row.timestamp }}</td>
-                <td>
-                  {{ row.likes }}
-                  <a href="{{ url_for('like', id=row.id) }}" class="btn btn-sm btn-outline-primary ms-2">いいね</a>
-                </td>
-                <td>
-                  <a href="{{ url_for('edit', id=row.id) }}" class="btn btn-sm btn-outline-secondary">編集</a>
-                </td>
+                {% for item in row %}
+                  <td>{{ item }}</td>
+                {% endfor %}
               </tr>
             {% endfor %}
           </tbody>
